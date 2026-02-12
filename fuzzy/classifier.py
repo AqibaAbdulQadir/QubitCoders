@@ -27,7 +27,7 @@ def load_llm_model():
     }
 
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
+        model_name="gemini-2.5-flash",
         generation_config=generation_config,
     )
 
@@ -35,22 +35,37 @@ def load_llm_model():
 
 
 def fetch_api_data(username):
+    base = "https://leetcode-api-pied.vercel.app"
     try:
-        r = requests.get(f'https://alfa-leetcode-api.onrender.com/{username}/solved')
-        print(r.json())
-
+        r = requests.get(f'{base}/user/{username}')
         data = r.json()
-        submission_data = (data['easySolved'], data['mediumSolved'], data['hardSolved'])
+        subs = data["submitStats"]["acSubmissionNum"]
+        # submission_data = (data['easySolved'], data['mediumSolved'], data['hardSolved'])
+        submission_data = (subs[1]["count"], subs[2]["count"], subs[3]["count"])
+        # print(submission_data)
+        res = 'Successful!'
+
     except KeyError:
         submission_data = None
+        res = 'User not found!'
+
+    except:
+        submission_data = None
+        res = 'Limit exceeded!'
 
     try:
-        r = requests.get(f'https://alfa-leetcode-api.onrender.com/{username}/contest')
-        contest_data = (r.json()['contestRating'],)
+        r = requests.get(f'{base}/user/{username}/contests')
+        data = r.json()
+        contest_data = (data['userContestRanking']['rating'],)
+        # print(contest_data)
+
     except KeyError:
         contest_data = (0,)
 
-    return [contest_data, submission_data]
+    except:
+        contest_data = (0,)
+
+    return [contest_data, submission_data, res]
 
 
 def get_user_expertise(contest_data, submission_data):
@@ -104,8 +119,12 @@ def get_user_analysis(expertise_name, contest_data, submission_data):
 
 
 def get_response(username):
-    contest_data, submission_data = fetch_api_data(username)
-    if not submission_data: return None, None, None, None, None
+    contest_data, submission_data, res = fetch_api_data(username)
+    if res == 'User not found!': return None, None, None, None, 'User does not exist!'
+    elif res == 'Limit exceeded!': return None, None, None, None, 'Rate limit exceeded! Please try again in 5 minutes.'
     expertise_level, expertise_name = get_user_expertise(contest_data, submission_data)
-    recom = get_user_analysis(expertise_name, contest_data, submission_data)
-    return expertise_level, expertise_name, recom, contest_data, submission_data
+    recom = get_user_analysis(expertise_level, expertise_name, submission_data)
+    return expertise_level, expertise_name, recom, contest_data, submission_data, 'Successful!'
+
+
+
