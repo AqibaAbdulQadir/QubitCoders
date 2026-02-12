@@ -19,13 +19,13 @@ with st.form("my_form"):
     )
     submitted = st.form_submit_button("Submit")
     if submitted:
-        expertise_level, expertise_name, recom, contest_data, submission_data = get_response(username)
+        expertise_level, expertise_name, recom, contest_data, submission_data, res = get_response(username)
         if submission_data:
             st.markdown(f'''Your profile score is **{float(expertise_level)}/10** and expertise level is **{expertise_name}**!\n''')
             st.markdown(f"""
                     <u><strong>Your Data</strong></u><br>
                     ```
-                    • Contest Ranking:   {round(contest_data[0], 2)}
+                    • Contest Rating:   {round(contest_data[0], 2)}
                     • Hard questions:    {submission_data[2]}
                     • Medium questions:  {submission_data[1]}
                     • Easy questions:    {submission_data[0]} 
@@ -37,6 +37,6 @@ with st.form("my_form"):
 
         else:
             st.markdown(
-                f'''User does not exist!\n''')
+                f'''{res}\n''')
 
 
