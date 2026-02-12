@@ -1,5 +1,6 @@
 # QubitCoders - LeetCode Profile Analyzer
 
+Last Updated: February 12, 2026
 ---
 ## Overview
 QubitCoders is a web app designed for **CIS students at NEDUET** and aspiring coders to improve their problem-solving skills by analyzing their LeetCode profiles. The app provides personalized advice on how to improve based on contest ratings, the number of problems solved, and expertise level.
@@ -98,7 +99,3 @@ The QubitCoders app is deployed on Streamlit Cloud. To view the live version, vi
 ## Contributor
 
 - Aqiba Abdul Qadir: Creator and Developer
----
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
