@@ -123,7 +123,7 @@ def get_response(username):
     if res == 'User not found!': return None, None, None, None, 'User does not exist!'
     elif res == 'Limit exceeded!': return None, None, None, None, 'Rate limit exceeded! Please try again in 5 minutes.'
     expertise_level, expertise_name = get_user_expertise(contest_data, submission_data)
-    recom = get_user_analysis(expertise_level, expertise_name, submission_data)
+    recom = get_user_analysis(expertise_level, contest_data, submission_data)
     return expertise_level, expertise_name, recom, contest_data, submission_data, 'Successful!'
 
 
